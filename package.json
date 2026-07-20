@@ -1,0 +1,14 @@
+{
+  "name": "julianhk-site",
+  "version": "1.0.0",
+  "description": "Personal website for Julian Helguero-Kelley (julianhk.com) — plain static HTML/CSS.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "optimize:photo": "node optimize-photo.mjs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "sharp": "^0.35.3"
+  }
+}

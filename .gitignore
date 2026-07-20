@@ -1,0 +1,10 @@
+# dependencies (sharp is only needed locally to regenerate the optimized photo)
+node_modules/
+
+# generated preview (built from index.html + styles.css; not the source of truth)
+preview.html
+
+# os / editor cruft
+.DS_Store
+Thumbs.db
+*.log
