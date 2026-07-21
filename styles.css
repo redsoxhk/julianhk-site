@@ -36,61 +36,67 @@
   src: url('assets/fonts/archivo-600.woff2') format('woff2');
 }
 
-/* ---------- Design tokens ---------- */
+/* ---------- Design tokens ----------
+   Palette: olive/avocado green + canvas tan + orange.
+   The heat spectrum doubles as a ripening spectrum:
+   olive → gold → amber → orange → rust.
+   ------------------------------------ */
 :root {
   --font-display: 'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-serif;
   --font-body: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  /* warm butcher-paper ground with a faint red bias — chosen, not default cream */
-  --bg:        #fdf6f3;
-  --bg-card:   #ffffff;
-  --ink:       #1f1512;
-  --ink-soft:  #6d5b53;
-  --border:    #ecdcd3;
+  /* canvas tan ground, olive-brown ink */
+  --bg:        #f0e8d8;
+  --bg-card:   #faf5ea;
+  --ink:       #2a2618;
+  --ink-soft:  #6e664c;
+  --border:    #dcd0b8;
 
-  /* heat spectrum — serrano → habanero-gold → habanero → cayenne → chipotle */
-  --h1: #4d9c2d;
-  --h2: #f2b705;
-  --h3: #f2751a;
-  --h4: #d7263d;
-  --h5: #8c1c13;
+  /* ripening spectrum — unripe olive → gold → amber → orange → rust */
+  --h1: #7d8c3c;
+  --h2: #b99a2e;
+  --h3: #e0912a;
+  --h4: #d9691f;
+  --h5: #a03f14;
 
-  --accent:      var(--h4);   /* cayenne */
-  --accent-warm: var(--h3);   /* habanero */
+  --olive:       #6b7a3a;   /* avocado green, used for stamps */
+  --accent:      #b85416;   /* deep burnt orange — readable as link text */
+  --accent-warm: #e08a2a;   /* bright amber — decorative fills/gradients */
 
   --radius: 14px;
   --maxw: 640px;
-  --shadow: 0 1px 2px rgba(31,21,18,.05), 0 10px 30px rgba(140,28,19,.07);
-  --pip-off: #e7d7ce;
+  --shadow: 0 1px 2px rgba(42,38,24,.06), 0 10px 30px rgba(107,122,58,.10);
+  --pip-off: #dcd0b8;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:        #170f0d;   /* smoked oxblood-black */
-    --bg-card:   #211613;
-    --ink:       #f8ede6;
-    --ink-soft:  #b9a89d;
-    --border:    #3a2620;
-    --h1: #66c23e; --h2: #ffcf33; --h3: #ff8a3d; --h4: #ff4d5e; --h5: #d13a2a;
-    --accent:      var(--h4);
-    --accent-warm: var(--h3);
+    --bg:        #1c1b12;   /* deep olive-charcoal */
+    --bg-card:   #26241a;
+    --ink:       #f1ead8;
+    --ink-soft:  #aba286;
+    --border:    #3c3926;
+    --h1: #9fb254; --h2: #dcbb4a; --h3: #f0a03c; --h4: #ee7638; --h5: #c4552a;
+    --olive:       #9fb254;
+    --accent:      #f0a03c;
+    --accent-warm: #ee7638;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 36px rgba(0,0,0,.45);
-    --pip-off: #3a2620;
+    --pip-off: #3c3926;
   }
 }
 
 /* Explicit theme toggle wins over the OS media query in both directions */
 :root[data-theme="light"] {
-  --bg:#fdf6f3; --bg-card:#ffffff; --ink:#1f1512; --ink-soft:#6d5b53; --border:#ecdcd3;
-  --h1:#4d9c2d; --h2:#f2b705; --h3:#f2751a; --h4:#d7263d; --h5:#8c1c13;
-  --accent:var(--h4); --accent-warm:var(--h3);
-  --shadow:0 1px 2px rgba(31,21,18,.05),0 10px 30px rgba(140,28,19,.07); --pip-off:#e7d7ce;
+  --bg:#f0e8d8; --bg-card:#faf5ea; --ink:#2a2618; --ink-soft:#6e664c; --border:#dcd0b8;
+  --h1:#7d8c3c; --h2:#b99a2e; --h3:#e0912a; --h4:#d9691f; --h5:#a03f14;
+  --olive:#6b7a3a; --accent:#b85416; --accent-warm:#e08a2a;
+  --shadow:0 1px 2px rgba(42,38,24,.06),0 10px 30px rgba(107,122,58,.10); --pip-off:#dcd0b8;
 }
 :root[data-theme="dark"] {
-  --bg:#170f0d; --bg-card:#211613; --ink:#f8ede6; --ink-soft:#b9a89d; --border:#3a2620;
-  --h1:#66c23e; --h2:#ffcf33; --h3:#ff8a3d; --h4:#ff4d5e; --h5:#d13a2a;
-  --accent:var(--h4); --accent-warm:var(--h3);
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px rgba(0,0,0,.45); --pip-off:#3a2620;
+  --bg:#1c1b12; --bg-card:#26241a; --ink:#f1ead8; --ink-soft:#aba286; --border:#3c3926;
+  --h1:#9fb254; --h2:#dcbb4a; --h3:#f0a03c; --h4:#ee7638; --h5:#c4552a;
+  --olive:#9fb254; --accent:#f0a03c; --accent-warm:#ee7638;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px rgba(0,0,0,.45); --pip-off:#3c3926;
 }
 
 /* ---------- Base ---------- */
@@ -226,9 +232,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .stamp {
   padding: .5rem 1.05rem; border-radius: 8px;
   font-family: var(--font-display); font-weight: 600; font-size: .95rem;
-  color: var(--accent);
-  border: 1.5px dashed color-mix(in srgb, var(--accent) 45%, transparent);
-  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  color: var(--olive);
+  border: 1.5px dashed color-mix(in srgb, var(--olive) 50%, transparent);
+  background: color-mix(in srgb, var(--olive) 9%, transparent);
 }
 
 /* ---------- Links list ---------- */
