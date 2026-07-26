@@ -1,0 +1,94 @@
+---
+/**
+ * BaseLayout — the shell every page shares: <head>, skip link, nav, footer.
+ * Carries over the original page's accessibility features verbatim:
+ * skip link, visible focus states, reduced-motion support.
+ */
+import Spectrum from '../components/Spectrum.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Used for the social preview card; defaults to the description. */
+  ogDescription?: string;
+}
+
+const { title, description, ogDescription } = Astro.props;
+
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/work/', label: 'Work' },
+  { href: '/writing/', label: 'Writing' },
+];
+
+// Mark the current page for both styling and screen readers.
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => {
+  const clean = href.replace(/\/+$/, '') || '/';
+  return clean === '/' ? path === '/' : path === clean || path.startsWith(`${clean}/`);
+};
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://julianhk.com');
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+
+    <!-- Open Graph / social preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={ogDescription ?? description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Fonts are self-hosted in /assets/fonts — no external network calls, ever. -->
+    <link
+      rel="preload"
+      href="/assets/fonts/bricolage-800.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/archivo-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <nav class="sitenav" aria-label="Primary">
+      <ul role="list">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <main id="main" class="page">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <Spectrum variant="thin" />
+      <p>© {year} Julian Helguero-Kelley · Small batch, no preservatives.</p>
+    </footer>
+  </body>
+</html>

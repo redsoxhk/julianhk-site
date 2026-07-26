@@ -1,0 +1,91 @@
+---
+title: 'Example post: what MDX can do'
+description: 'A demo post, not a real one. It exists to show what a post can contain — components, images, code — and to be deleted once real writing takes its place.'
+date: 2026-07-26
+draft: false
+---
+
+import { Image } from 'astro:assets';
+import Callout from '../../components/Callout.astro';
+import HeatList from '../../components/HeatList.astro';
+import ripeningSpectrum from '../../assets/ripening-spectrum.webp';
+
+**This is a placeholder post.** It isn't about anything — it's here so you can see
+what a post is capable of before you write a real one. Delete the file at
+`src/content/writing/example-post.mdx` whenever you like.
+
+## Regular writing works normally
+
+Most of a post is just text. You write it in Markdown, which means `**bold**`
+gives you **bold**, `_italic_` gives you _italic_, and a line starting with `##`
+becomes a heading. Links work the way you'd expect: [the home page](/).
+
+- Bulleted lists
+- Also work
+- Like this
+
+> And block quotes look like this — useful for pulling out a line.
+
+## You can drop components into the middle of a post
+
+This is the part plain Markdown can't do. Because this is an **MDX** file, any
+component from `src/components/` can be used right inside the writing:
+
+<Callout title="Small batch, no preservatives" heat={4}>
+  This box is a real component — `Callout` — imported at the top of this file. It takes a
+  `title` and an optional `heat` from 1 to 5, which tints the left edge and adds the meter.
+</Callout>
+
+The heat meter itself is reusable too, so a list of ratings can appear inside a
+post exactly as it does on the home page:
+
+<HeatList
+  items={[
+    { name: 'Habanero', heat: 4 },
+    { name: 'Jalapeño', heat: 2 },
+    { name: 'Bell pepper', heat: 1 },
+  ]}
+/>
+
+## Images
+
+Images go in `src/assets/` and get imported at the top of the file. Astro resizes
+and compresses them automatically and writes the width and height into the page,
+so nothing jumps around while it loads.
+
+<figure>
+  <Image
+    src={ripeningSpectrum}
+    alt="The ripening spectrum used across the site, running from olive green through gold and amber to rust."
+    widths={[480, 800, 1200]}
+    sizes="(max-width: 640px) 100vw, 640px"
+    loading="lazy"
+  />
+  <figcaption>The ripening spectrum — olive → gold → amber → orange → rust.</figcaption>
+</figure>
+
+## Code
+
+Code blocks are syntax-highlighted with no setup:
+
+```js
+const heat = (scoville) => Math.min(5, Math.ceil(scoville / 200_000));
+```
+
+## Starting a real post
+
+Copy this file, rename it — the filename becomes the web address, so
+`first-batch.mdx` lands at `/writing/first-batch/` — and replace the block at
+the very top:
+
+```yaml
+---
+title: 'Your title'
+description: 'One sentence. Shows on the writing index and in link previews.'
+date: 2026-08-01
+draft: true
+---
+```
+
+Leave `draft: true` while you're still working. Drafts don't appear on the
+writing page and don't get published — flip it to `false` when it's ready.

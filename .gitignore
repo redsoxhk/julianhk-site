@@ -1,7 +1,11 @@
-# dependencies (sharp is only needed locally to regenerate the optimized photo)
+# dependencies
 node_modules/
 
-# generated preview (built from index.html + styles.css; not the source of truth)
+# astro build output + caches (dist/ is generated; never commit it)
+dist/
+.astro/
+
+# generated preview artifact (built from dist/; not the source of truth)
 preview.html
 
 # cloudflare / wrangler local state

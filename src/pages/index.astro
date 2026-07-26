@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Spectrum from '../components/Spectrum.astro';
+import HeatList from '../components/HeatList.astro';
+
+const interests = [
+  { name: 'Making hot sauce', heat: 5 },
+  { name: 'Growing hot peppers', heat: 4 },
+  { name: 'Chess', heat: 4 },
+  { name: 'Coffee', heat: 3 },
+  { name: 'Co-op games on Steam', heat: 2 },
+  { name: 'A good India Pale Ale', heat: 2 },
+  { name: 'Meditation — the cool-down', heat: 1 },
+];
+
+const links = [
+  { label: 'Email', value: 'mail.julianhk@gmail.com', href: 'mailto:mail.julianhk@gmail.com' },
+  { label: 'LinkedIn', value: 'julian-hk', href: 'https://www.linkedin.com/in/julian-hk', me: true },
+  { label: 'X / Twitter', value: '@redsoxhk', href: 'https://x.com/redsoxhk', me: true },
+  { label: 'GitHub', value: '@redsoxhk', href: 'https://github.com/redsoxhk', me: true },
+  // Bluesky: add once julianhk.com is set as your handle (atproto starter)
+];
+---
+
+<BaseLayout
+  title="Julian Helguero-Kelley — Product Manager"
+  description="Julian Helguero-Kelley — product manager. I build small things to answer questions I have, and write about what I was thinking while I built them. Sports, pop culture, politics, AI, pepper plants."
+  ogDescription="I build small things to answer questions I have, and write about what I was thinking while I built them."
+>
+  {/* ===================== HERO ===================== */}
+  <header class="hero">
+    <img
+      class="hero__photo"
+      src="/assets/profile.jpg"
+      alt="Julian Helguero-Kelley"
+      width="320"
+      height="320"
+      loading="eager"
+      decoding="async"
+    />
+
+    <p class="kicker">Small-batch hot sauce</p>
+    <h1 class="wordmark">Julian<br />Helguero-Kelley</h1>
+
+    {/* signature: a heat spectrum, cool → hot */}
+    <Spectrum />
+
+    <p class="lede">
+      Product manager. I build small things — usually to answer a question I have — and write
+      about what I was thinking while I built them.
+    </p>
+    <p class="sub">
+      This site is the record: what I've built, why I built it, and the ideas I haven't done
+      anything with yet. Sports, pop culture, politics, AI, pepper plants.
+    </p>
+
+    <ul class="cta" role="list">
+      <li><a class="btn btn--primary" href="mailto:mail.julianhk@gmail.com">Get in touch</a></li>
+      <li><a class="btn" href="/work/">See my work</a></li>
+      <li><a class="btn" href="https://www.linkedin.com/in/julian-hk" rel="me">LinkedIn</a></li>
+    </ul>
+  </header>
+
+  {/* ===================== HEAT INDEX ===================== */}
+  <section class="section" aria-labelledby="heat">
+    <div class="section__head">
+      <h2 id="heat" class="section__title">What I'm into</h2>
+      <p class="section__legend">
+        <span>cooler</span><i class="legend-bar" aria-hidden="true"></i><span>hotter</span>
+      </p>
+    </div>
+
+    <HeatList items={interests} />
+  </section>
+
+  {/* ===================== VALUES ===================== */}
+  <section class="section" aria-labelledby="values">
+    <h2 id="values" class="section__title">How I work</h2>
+    <ul class="stamps" role="list">
+      <li class="stamp">Honesty</li>
+      <li class="stamp">Positivity</li>
+      <li class="stamp">Communication</li>
+    </ul>
+  </section>
+
+  {/* ===================== CONNECT ===================== */}
+  <section class="section" aria-labelledby="connect">
+    <h2 id="connect" class="section__title">Find me</h2>
+    <ul class="links" role="list">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href} rel={link.me ? 'me' : undefined}>
+              <span class="links__label">{link.label}</span>
+              <span class="links__val">{link.value}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

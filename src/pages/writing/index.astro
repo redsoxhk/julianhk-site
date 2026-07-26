@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Spectrum from '../../components/Spectrum.astro';
+
+// Drafts stay off the site entirely; the rest sort newest-first.
+const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+---
+
+<BaseLayout
+  title="Writing — Julian Helguero-Kelley"
+  description="Notes and posts by Julian Helguero-Kelley."
+>
+  <header class="pagehead">
+    <h1 class="pagehead__title">Writing</h1>
+    <Spectrum />
+    <p class="pagehead__intro">Notes, mostly on product, peppers, and whatever's in between.</p>
+  </header>
+
+  <section class="section" aria-labelledby="posts">
+    <h2 id="posts" class="section__title">Posts</h2>
+
+    {
+      posts.length > 0 ? (
+        <ul class="cards" role="list">
+          {posts.map((post) => (
+            <li>
+              <a class="card" href={`/writing/${post.id}/`}>
+                <p class="card__meta">
+                  <time datetime={post.data.date.toISOString().slice(0, 10)}>
+                    {formatDate(post.data.date)}
+                  </time>
+                </p>
+                <p class="card__title">{post.data.title}</p>
+                <p class="card__desc">{post.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="placeholder">
+          <span class="placeholder__tag">Placeholder</span>
+          <p>No posts yet.</p>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

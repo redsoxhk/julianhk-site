@@ -1,0 +1,24 @@
+---
+/**
+ * HeatList — a list of things rated on the heat meter.
+ * Used on the home page ("What I'm into"); reusable anywhere, including MDX.
+ */
+import HeatMeter from './HeatMeter.astro';
+
+interface Props {
+  items: { name: string; heat: number }[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="heatlist" role="list">
+  {
+    items.map((item) => (
+      <li class="heatlist__row">
+        <span class="heatlist__name">{item.name}</span>
+        <HeatMeter heat={item.heat} label={item.name} />
+      </li>
+    ))
+  }
+</ul>
