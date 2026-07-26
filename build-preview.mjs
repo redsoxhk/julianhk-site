@@ -1,20 +1,59 @@
 import fs from 'fs';
-// Builds a single self-contained preview.html (fonts + photo inlined) from the
-// deployable site in public/. Used only to publish the shareable preview artifact.
-const SITE = 'public';
-let html = fs.readFileSync(`${SITE}/index.html`, 'utf8');
-let css  = fs.readFileSync(`${SITE}/styles.css`, 'utf8');
-// inline self-hosted fonts as data URIs (paths in CSS are relative to the site root)
-css = css.replace(/url\('(assets\/fonts\/[^']+\.woff2)'\)/g, (_, p) => {
-  const b64 = fs.readFileSync(`${SITE}/${p}`).toString('base64');
-  return `url('data:font/woff2;base64,${b64}')`;
+import path from 'path';
+
+// Builds a single self-contained preview.html (CSS + fonts + images inlined)
+// from the BUILT site in dist/. Used only to publish a shareable preview file;
+// it is not part of the deploy. Run `npm run build:preview-artifact`.
+//
+// Pass a page path to preview something other than the home page, e.g.
+//   node build-preview.mjs writing/example-post
+const DIST = 'dist';
+const page = (process.argv[2] || '').replace(/^\/|\/$/g, '');
+const entry = path.posix.join(DIST, page, 'index.html');
+
+if (!fs.existsSync(entry)) {
+  console.error(`No built page at ${entry} — run "npm run build" first.`);
+  process.exit(1);
+}
+
+let html = fs.readFileSync(entry, 'utf8');
+
+const asDataUri = (urlPath, mime) => {
+  const file = path.join(DIST, urlPath.replace(/^\//, ''));
+  if (!fs.existsSync(file)) return null;
+  return `data:${mime};base64,${fs.readFileSync(file).toString('base64')}`;
+};
+
+const mimeFor = (file) =>
+  ({ '.woff2': 'font/woff2', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.png': 'image/png' })[
+    path.extname(file).toLowerCase()
+  ] ?? 'application/octet-stream';
+
+// 1. Pull in every stylesheet Astro linked, inlining the fonts it references.
+let css = '';
+html = html.replace(/<link rel="stylesheet" href="([^"]+)"\s*\/?>/g, (_, href) => {
+  const file = path.join(DIST, href.replace(/^\//, ''));
+  if (!fs.existsSync(file)) return '';
+  css += fs.readFileSync(file, 'utf8');
+  return '';
 });
-// inline profile photo
-const jpg = fs.readFileSync(`${SITE}/assets/profile.jpg`).toString('base64');
-const bodyInner = html.split('<body>')[1].split('</body>')[0]
-  .replace('src="assets/profile.jpg"', `src="data:image/jpeg;base64,${jpg}"`)
-  // drop the year <script> (artifact CSP-safe; hardcode current year)
-  .replace(/<script>[\s\S]*<\/script>/, '')
-  .replace('<span id="year">2026</span>', '2026');
+css = css.replace(/url\(["']?(\/assets\/fonts\/[^"')]+)["']?\)/g, (match, p) => {
+  const uri = asDataUri(p, 'font/woff2');
+  return uri ? `url('${uri}')` : match;
+});
+
+// 2. Inline images. srcset would balloon the file, so keep only the fallback src.
+html = html
+  .replace(/\ssrcset="[^"]*"/g, '')
+  .replace(/\ssizes="[^"]*"/g, '')
+  .replace(/src="(\/(?:assets|_astro)\/[^"]+)"/g, (match, p) => {
+    const uri = asDataUri(p, mimeFor(p));
+    return uri ? `src="${uri}"` : match;
+  });
+
+// 3. Drop preload hints (their targets are now inlined) and emit body only.
+html = html.replace(/<link rel="preload"[^>]*>/g, '');
+const bodyInner = html.split('<body>')[1].split('</body>')[0];
+
 fs.writeFileSync('preview.html', `<style>\n${css}\n</style>\n${bodyInner}`);
 console.log('preview.html', fs.statSync('preview.html').size, 'bytes');

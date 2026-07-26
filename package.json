@@ -1,14 +1,20 @@
 {
   "name": "julianhk-site",
   "version": "1.0.0",
-  "description": "Personal website for Julian Helguero-Kelley (julianhk.com) — plain static HTML/CSS.",
+  "description": "Personal website for Julian Helguero-Kelley (julianhk.com) — Astro + MDX, statically generated.",
   "private": true,
   "type": "module",
   "scripts": {
-    "optimize:photo": "node optimize-photo.mjs"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "optimize:photo": "node optimize-photo.mjs",
+    "build:preview-artifact": "npm run build && node build-preview.mjs"
   },
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.3",
+    "astro": "^7.1.3",
     "sharp": "^0.35.3"
   }
 }

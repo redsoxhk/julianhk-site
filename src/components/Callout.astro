@@ -1,0 +1,26 @@
+---
+/**
+ * Callout — a boxed aside, tinted by heat level.
+ * This is the component the example MDX post embeds, to show that any
+ * Astro component can be dropped straight into a post's prose.
+ */
+import HeatMeter from './HeatMeter.astro';
+
+interface Props {
+  title: string;
+  /** 1–5; tints the left edge and shows a meter in the header. */
+  heat?: number;
+}
+
+const { title, heat } = Astro.props;
+---
+
+<aside class="callout" data-heat={heat}>
+  <div class="callout__head">
+    <p class="callout__title">{title}</p>
+    {heat && <HeatMeter heat={heat} label={title} />}
+  </div>
+  <div class="callout__body">
+    <slot />
+  </div>
+</aside>

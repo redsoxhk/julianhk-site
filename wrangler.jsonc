@@ -1,12 +1,25 @@
 {
-  // Tells Cloudflare exactly what to deploy: ONLY the built site in public/.
-  // Without this, wrangler defaults to uploading the whole repo (including the
-  // node_modules it installs at build time), which blew past the 25 MiB/file
-  // limit on the first attempt. Pointing it at public/ makes that impossible.
+  // Tells Cloudflare exactly what to deploy: ONLY the built site in dist/.
+  //
+  // This used to point at ./public back when the site was hand-written HTML.
+  // Astro now COMPILES public/ + src/ into dist/, so dist/ is the finished
+  // site and the only thing that should ever be uploaded.
+  //
+  // Why this matters: without an explicit directory, wrangler uploads the whole
+  // repo — including the node_modules it installs at build time — and workerd
+  // (122 MiB) blows past Cloudflare's 25 MiB-per-file limit. That killed the
+  // first deploys. dist/ contains only generated HTML/CSS/JS and assets, so it
+  // can't happen again.
+  //
+  // "build.command" runs before the upload, so the deploy is self-contained:
+  // Cloudflare doesn't need a build command configured in the dashboard.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "julianhk-site",
   "compatibility_date": "2026-07-26",
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
-    "directory": "./public"
+    "directory": "./dist"
   }
 }

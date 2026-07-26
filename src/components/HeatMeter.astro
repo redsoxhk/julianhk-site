@@ -1,0 +1,26 @@
+---
+/**
+ * HeatMeter — the signature Scoville-style 1–5 pip meter.
+ *
+ * Five pips, filled left-to-right along the ripening spectrum
+ * (olive → gold → amber → orange → rust). Purely decorative to the eye,
+ * so it carries role="img" plus a spoken label for screen readers.
+ *
+ *   <HeatMeter heat={4} label="Growing hot peppers" />
+ *   → announced as "Growing hot peppers: heat 4 of 5"
+ */
+interface Props {
+  /** 1–5. Anything outside that range is clamped. */
+  heat: number;
+  /** Optional prefix so the meter makes sense read on its own. */
+  label?: string;
+}
+
+const { heat, label } = Astro.props;
+const level = Math.min(5, Math.max(1, Math.round(heat)));
+const ariaLabel = label ? `${label}: heat ${level} of 5` : `heat ${level} of 5`;
+---
+
+<span class="meter" data-heat={level} role="img" aria-label={ariaLabel}>
+  <i></i><i></i><i></i><i></i><i></i>
+</span>

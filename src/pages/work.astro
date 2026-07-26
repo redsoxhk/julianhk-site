@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Spectrum from '../components/Spectrum.astro';
+
+/**
+ * Project entries. Deliberately EMPTY — no invented projects.
+ *
+ * To add one, copy the shape below into the array. Nothing else needs
+ * changing; the placeholder disappears as soon as there's one entry.
+ *
+ *   {
+ *     title: 'Name of the thing',
+ *     meta: '2026 · Side project',
+ *     description: 'One or two sentences about what it is.',
+ *     href: 'https://github.com/redsoxhk/...',   // optional
+ *   }
+ */
+const projects: { title: string; meta: string; description: string; href?: string }[] = [];
+---
+
+<BaseLayout
+  title="Work — Julian Helguero-Kelley"
+  description="Things Julian Helguero-Kelley has built. Code lives on GitHub."
+>
+  <header class="pagehead">
+    <h1 class="pagehead__title">Work</h1>
+    <Spectrum />
+    <p class="pagehead__intro">Things I've built. The code lives on GitHub.</p>
+  </header>
+
+  <section class="section" aria-labelledby="code">
+    <h2 id="code" class="section__title">Code</h2>
+    <ul class="links" role="list">
+      <li>
+        <a href="https://github.com/redsoxhk" rel="me">
+          <span class="links__label">GitHub</span>
+          <span class="links__val">@redsoxhk</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="projects">
+    <h2 id="projects" class="section__title">Projects</h2>
+
+    {
+      projects.length > 0 ? (
+        <ul class="cards" role="list">
+          {projects.map((project) => {
+            const Tag = project.href ? 'a' : 'div';
+            return (
+              <li>
+                <Tag class="card" href={project.href}>
+                  <p class="card__meta">{project.meta}</p>
+                  <p class="card__title">{project.title}</p>
+                  <p class="card__desc">{project.description}</p>
+                </Tag>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <div class="placeholder">
+          <span class="placeholder__tag">Placeholder</span>
+          <p>
+            No project entries yet — this is where they'll go, one card each, once you decide what
+            to feature and how to describe it.
+          </p>
+          <p>
+            Add them in <code>src/pages/work.astro</code>; there's a filled-in example in the
+            comment at the top of that file.
+          </p>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

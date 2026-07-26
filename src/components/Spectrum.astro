@@ -1,0 +1,19 @@
+---
+/**
+ * Spectrum — the heat/ripening gradient bar used as a visual signature.
+ * Decorative only, so it is hidden from screen readers.
+ */
+interface Props {
+  /** `thin` is the 4px variant used in the footer. */
+  variant?: 'default' | 'thin';
+  class?: string;
+}
+
+const { variant = 'default', class: className } = Astro.props;
+---
+
+<div
+  class:list={['spectrum', variant === 'thin' && 'spectrum--thin', className]}
+  aria-hidden="true"
+>
+</div>
