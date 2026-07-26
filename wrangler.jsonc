@@ -1,0 +1,12 @@
+{
+  // Tells Cloudflare exactly what to deploy: ONLY the built site in public/.
+  // Without this, wrangler defaults to uploading the whole repo (including the
+  // node_modules it installs at build time), which blew past the 25 MiB/file
+  // limit on the first attempt. Pointing it at public/ makes that impossible.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "julianhk-site",
+  "compatibility_date": "2026-07-26",
+  "assets": {
+    "directory": "./public"
+  }
+}

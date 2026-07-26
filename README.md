@@ -5,20 +5,24 @@ to view. Structured with CSS custom properties so it's easy to re-theme or grow 
 
 ## Structure
 
-| File | What it is |
+Everything that ships lives in **`public/`**; the repo root holds source and tooling only.
+
+| Path | What it is |
 |------|-----------|
-| `index.html` | The page (single page, semantic HTML). |
-| `styles.css` | All styling. Design tokens live at the top under `:root`. |
-| `assets/profile.jpg` / `.webp` | Optimized profile photo (~50 KB). |
-| `assets/profile-original.jpg` | Full-resolution source photo (regeneration input). |
-| `optimize-photo.mjs` | Regenerates the optimized photo from the original. |
+| `public/index.html` | The page (single page, semantic HTML). |
+| `public/styles.css` | All styling. Design tokens live at the top under `:root`. |
+| `public/assets/` | Optimized photo (~50 KB) and self-hosted fonts. |
+| `public/_headers` | Cloudflare caching + security headers. |
+| `wrangler.jsonc` | Cloudflare config — deploys **only** `public/`. |
+| `src-assets/profile-original.jpg` | Full-resolution source photo (not deployed). |
+| `optimize-photo.mjs` | Regenerates the optimized photo into `public/assets/`. |
 
 ## Local preview
 
 No build needed — open `index.html` in a browser, or run any static server:
 
 ```bash
-npx serve .
+npx serve public
 ```
 
 ## Regenerating the optimized photo
