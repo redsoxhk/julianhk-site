@@ -48,10 +48,9 @@ const formatDate = (date: Date) =>
           ))}
         </ul>
       ) : (
-        <div class="placeholder">
-          <span class="placeholder__tag">Placeholder</span>
-          <p>No posts yet.</p>
-        </div>
+        /* Deliberately plain and promise-free — no "coming soon", no cadence
+           pledge to fall behind on. Disappears as soon as a post publishes. */
+        <p class="empty-note">Nothing published yet.</p>
       )
     }
   </section>
