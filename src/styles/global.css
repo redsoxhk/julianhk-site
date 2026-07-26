@@ -304,22 +304,14 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   color: var(--ink-soft); margin: 0; max-width: 52ch;
 }
 
-/* ---------- Placeholder blocks (content Julian still has to write) ---------- */
-.placeholder {
-  border: 1.5px dashed color-mix(in srgb, var(--olive) 50%, transparent);
-  background: color-mix(in srgb, var(--olive) 7%, transparent);
-  border-radius: var(--radius);
-  padding: 1.15rem 1.3rem;
+/* ---------- Empty state ----------
+   Quiet by design: an empty section should read as "not yet", not as a
+   construction notice. No dashed box, no badge — just a soft line. */
+.empty-note {
+  margin: 0;
   color: var(--ink-soft);
+  font-size: .95rem;
 }
-.placeholder__tag {
-  display: inline-block; margin-bottom: .5rem;
-  font-family: var(--font-display); font-weight: 700;
-  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--olive);
-}
-.placeholder p { margin: 0 0 .6rem; font-size: .95rem; }
-.placeholder p:last-child { margin-bottom: 0; }
 
 /* ---------- Cards (work entries, post list) ---------- */
 .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; }
