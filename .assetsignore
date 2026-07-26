@@ -1,0 +1,14 @@
+# Files Cloudflare must NOT upload as website assets.
+# Only the actual site (index.html, styles.css, _headers, assets/) should ship.
+# This prevents the build tooling — especially the huge node_modules binaries —
+# from being treated as site content (which broke the first deploy: workerd = 122 MiB).
+
+node_modules
+.git
+.wrangler
+package.json
+package-lock.json
+*.mjs
+README.md
+preview.html
+assets/profile-original.jpg
